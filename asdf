@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#Quick Launch your Bash Scripts.
+#Author: Sean O'Connor
+#Append:
+#alias asdf='~/BashScripts/asdf'
+#to file
+#.bash_aliases
+#Modify alias directory accordingly
+
+echo "Please choose a script: (Press Ctrl+C to quit)"
+
+# List all executable scripts in the BashScripts directory
+scripts=()
+index=1
+
+for script in ~/BashScripts/*; do
+    if [[ -x "$script" && -f "$script" ]]; then  # Check if the file is executable and a regular file
+        scripts+=("$(basename "$script")")  # Add the script name to the array
+        echo "[$index] $(basename "$script")"
+        ((index++))
+    fi
+done
+
+# Prompt for user input
+read -p "Enter the number of the script to run: " choice
+
+# Execute the chosen script
+if [[ $choice -ge 1 && $choice -lt $index ]]; then
+    bash ~/BashScripts/"${scripts[$((choice - 1))]}"
+else
+    echo "Invalid choice. Exiting."
+fi
